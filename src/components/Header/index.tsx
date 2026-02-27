@@ -1,11 +1,10 @@
-import { useSelector } from 'react-redux' // Importar o hook
+import { useSelector } from 'react-redux'
 import * as S from './styles'
 import { paraReal } from '../Produto'
 import cesta from '../../assets/cesta.png'
-import { RootReducer } from '../../store' // Importar o tipo da sua store
+import { RootReducer } from '../../store'
 
 const Header = () => {
-  // Agora o Header busca os dados diretamente do estado global
   const itensNoCarrinho = useSelector(
     (state: RootReducer) => state.carrinho.itens
   )
@@ -22,7 +21,6 @@ const Header = () => {
     <S.Header>
       <h1>EBAC Sports</h1>
       <div>
-        {/* Usando os dados vindos do Redux */}
         <span>{favoritos.length} favoritos</span>
         <img src={cesta} alt="cesta" />
         <span>

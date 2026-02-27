@@ -11,10 +11,8 @@ export type Produto = {
 }
 
 function App() {
-  // 1. Chamada obrigatória da API (para cumprir o requisito do RTK Query)
   const { data: produtos, isLoading } = useGetProdutosQuery()
 
-  // 2. O backup para caso a API falhe (como está acontecendo agora)
   const produtosTeste: Produto[] = [
     {
       id: 1,
@@ -24,17 +22,16 @@ function App() {
     }
   ]
 
-  // 3. O retorno de carregamento precisa estar aqui dentro
   if (isLoading) return <h3>Carregando...</h3>
 
   return (
     <>
       <GlobalStyle />
       <div className="container">
-        {/* O Header não recebe MAIS NADA como prop */}
+        {}
         <Header />
 
-        {/* O Produtos recebe APENAS a lista de produtos */}
+        {}
         <Produtos
           produtos={produtos && produtos.length > 0 ? produtos : produtosTeste}
         />

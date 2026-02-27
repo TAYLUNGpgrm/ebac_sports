@@ -4,7 +4,6 @@ import * as S from './styles'
 
 type Props = {
   produtos: ProdutoType[]
-  // Removido: favoritos e favoritar (o Redux cuida disso agora)
 }
 
 const ProdutosComponent = ({ produtos }: Props) => {
@@ -12,11 +11,7 @@ const ProdutosComponent = ({ produtos }: Props) => {
     <>
       <S.Produtos>
         {produtos.map((produto) => (
-          <Produto
-            key={produto.id}
-            produto={produto}
-            // Note que não passamos mais 'estaNosFavoritos' nem 'favoritar'
-          />
+          <Produto key={produto.id} produto={produto} />
         ))}
       </S.Produtos>
     </>

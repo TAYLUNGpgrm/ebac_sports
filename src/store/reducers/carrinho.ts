@@ -8,7 +8,7 @@ type CarrinhoState = {
 
 const initialState: CarrinhoState = {
   itens: [],
-  favoritos: [] // <-- Inicialize vazio
+  favoritos: []
 }
 
 const carrinhoSlice = createSlice({

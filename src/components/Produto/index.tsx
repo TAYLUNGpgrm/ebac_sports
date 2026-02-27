@@ -1,20 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { adicionar, favoritar } from '../../store/reducers/carrinho'
 import { Produto as ProdutoType } from '../../App'
-import { RootReducer } from '../../store' // <--- Importante para o useSelector
+import { RootReducer } from '../../store'
 import * as S from './styles'
 
 type Props = {
   produto: ProdutoType
-  // NADA MAIS AQUI! Só o produto.
 }
-
-// ... sua função paraReal ...
 
 const ProdutoComponent = ({ produto }: Props) => {
   const dispatch = useDispatch()
 
-  // O componente descobre sozinho se é favorito:
   const favoritos = useSelector(
     (state: RootReducer) => state.carrinho.favoritos
   )
@@ -22,8 +18,6 @@ const ProdutoComponent = ({ produto }: Props) => {
 
   return (
     <S.Produto>
-      {/* ... seu JSX (capa, titulo, preço) ... */}
-
       <S.BtnComprar onClick={() => dispatch(favoritar(produto))} type="button">
         {estaNosFavoritos
           ? '- Remover dos favoritos'
