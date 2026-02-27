@@ -1,43 +1,45 @@
-import { useDispatch } from 'react-redux'
-import { adicionar } from '../../store/reducers/carrinho'
+import { useDispatch, useSelector } from 'react-redux'
+import { adicionar, favoritar } from '../../store/reducers/carrinho'
 import { Produto as ProdutoType } from '../../App'
+import { RootReducer } from '../../store' // <--- Importante para o useSelector
 import * as S from './styles'
 
 type Props = {
   produto: ProdutoType
-  favoritar: (produto: ProdutoType) => void
-  estaNosFavoritos: boolean
+  // NADA MAIS AQUI! Só o produto.
 }
 
-export const paraReal = (valor: number) =>
-  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
-    valor
-  )
+// ... sua função paraReal ...
 
-const ProdutoComponent = ({ produto, favoritar, estaNosFavoritos }: Props) => {
+const ProdutoComponent = ({ produto }: Props) => {
   const dispatch = useDispatch()
+
+  // O componente descobre sozinho se é favorito:
+  const favoritos = useSelector(
+    (state: RootReducer) => state.carrinho.favoritos
+  )
+  const estaNosFavoritos = favoritos.some((f) => f.id === produto.id)
 
   return (
     <S.Produto>
-      <S.Capa>
-        <img src={produto.imagem} alt={produto.nome} />
-      </S.Capa>
-      <S.Titulo>{produto.nome}</S.Titulo>
-      <S.Prices>
-        <strong>{paraReal(produto.preco)}</strong>
-      </S.Prices>
-      <S.BtnComprar onClick={() => favoritar(produto)} type="button">
+      {/* ... seu JSX (capa, titulo, preço) ... */}
+
+      <S.BtnComprar onClick={() => dispatch(favoritar(produto))} type="button">
         {estaNosFavoritos
           ? '- Remover dos favoritos'
           : '+ Adicionar aos favoritos'}
       </S.BtnComprar>
 
-      {/* Aqui a mágica acontece: trocamos aoComprar por dispatch(adicionar) */}
       <S.BtnComprar onClick={() => dispatch(adicionar(produto))} type="button">
         Adicionar ao carrinho
       </S.BtnComprar>
     </S.Produto>
   )
 }
+
+export const paraReal = (valor: number) =>
+  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+    valor
+  )
 
 export default ProdutoComponent

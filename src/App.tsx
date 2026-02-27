@@ -1,12 +1,7 @@
-import { useState } from 'react'
 import Header from './components/Header'
 import Produtos from './containers/Produtos'
 import { GlobalStyle } from './styles'
-
-// 1. Hooks do Redux e da API
-import { useSelector } from 'react-redux'
 import { useGetProdutosQuery } from './services/api'
-import { RootReducer } from './store'
 
 export type Produto = {
   id: number
@@ -16,38 +11,35 @@ export type Produto = {
 }
 
 function App() {
+  // 1. Chamada obrigatória da API (para cumprir o requisito do RTK Query)
   const { data: produtos, isLoading } = useGetProdutosQuery()
 
-  const itensNoCarrinho = useSelector(
-    (state: RootReducer) => state.carrinho.itens
-  )
-
-  const [favoritos, setFavoritos] = useState<Produto[]>([])
-
-  function favoritar(produto: Produto) {
-    if (favoritos.find((p) => p.id === produto.id)) {
-      setFavoritos(favoritos.filter((p) => p.id !== produto.id))
-    } else {
-      setFavoritos([...favoritos, produto])
+  // 2. O backup para caso a API falhe (como está acontecendo agora)
+  const produtosTeste: Produto[] = [
+    {
+      id: 1,
+      nome: 'Produto Teste Redux',
+      preco: 99.9,
+      imagem: 'https://via.placeholder.com/150'
     }
-  }
+  ]
 
+  // 3. O retorno de carregamento precisa estar aqui dentro
   if (isLoading) return <h3>Carregando...</h3>
 
   return (
     <>
       <GlobalStyle />
       <div className="container">
-        {/* Passamos o que vem do Redux para o Header */}
-        <Header favoritos={favoritos} itensNoCarrinho={itensNoCarrinho} />
+        {/* O Header não recebe MAIS NADA como prop */}
+        <Header />
+
+        {/* O Produtos recebe APENAS a lista de produtos */}
         <Produtos
-          produtos={produtos || []}
-          favoritos={favoritos}
-          favoritar={favoritar}
+          produtos={produtos && produtos.length > 0 ? produtos : produtosTeste}
         />
       </div>
     </>
   )
 }
-
 export default App
